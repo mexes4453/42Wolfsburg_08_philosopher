@@ -6,7 +6,7 @@
 /*   By: cudoh <cudoh@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 14:36:59 by cudoh             #+#    #+#             */
-/*   Updated: 2022/09/10 21:32:09 by cudoh            ###   ########.fr       */
+/*   Updated: 2022/09/18 07:41:49 by cudoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ int	main(int argc, char *argv[])
 	if (ft_app_threads_rejoin(&a_var, philo_threads) < 0)
 		return (-1);
 	ft_app_err_info(&a_var);
-	ft_app_free_mem(philo_threads, a_var.mtx_forks, thread_vars);
+	ft_app_free_mem(philo_threads, &a_var, thread_vars);
 	return (0);
 }

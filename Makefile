@@ -6,34 +6,26 @@
 #    By: cudoh <cudoh@student.42wolfsburg.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/30 15:08:09 by cudoh             #+#    #+#              #
-#    Updated: 2022/09/10 22:24:12 by cudoh            ###   ########.fr        #
+#    Updated: 2022/09/18 09:41:05 by cudoh            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-#SRCS:= $(shell ls *.c | grep -v lst | xargs)
-SRCS:= main.c app_a_utils.c app_b_utils.c app_c_utils.c app_d_utils.c
+SRCS:= main.c ft_app_atoi.c ft_app_chk_input.c ft_app_var_init.c \
+		ft_app_sleep.c \
+		ft_app_eat.c ft_app_think.c ft_app_live.c ft_app_timestamp.c  		\
+		ft_app_count_eat.c ft_app_is_philo_starved.c ft_app_fork_mtx_lock.c	\
+		ft_app_fork_mtx_unlock.c ft_app_fork_lim_chk.c \
+		ft_app_malloc_thr_mtx_var_ptrs.c ft_app_init_thr_mtx_var_ptrs.c \
+		ft_app_create_thrds.c ft_app_threads_rejoin.c ft_app_err_info.c \
+		ft_app_free_mem.c ft_app_sleep_timer.c ft_app_clk_diff_ms.c \
+		ft_app_stdout.c
 
-SRCS_BONUS:= main_bonus.c queue_utils_bonus.c \
-		map_a_utils_bonus.c map_b_utils_bonus.c map_c_utils_bonus.c \
-		map_d_utils_bonus.c \
-		nav_a_utils_bonus.c nav_b_utils_bonus.c \
-		app_a_utils_bonus.c app_b_utils_bonus.c app_c_utils_bonus.c \
-		app_d_utils_bonus.c app_e_utils_bonus.c \
-		app_f_utils_bonus.c app_g_utils_bonus.c app_h_utils_bonus.c \
-
-
-OBJS_BONUS:=$(SRCS_BONUS:.c=.o)
 OBJS:= $(SRCS:.c=.o)
 
 NAME = philo
-#USR_LIB = libft.a
-#USR_LIB_PATH = ./libft
 
 CC = cc
-#CFLAGS = -Werror -Wall -Wextra -O3 -g #-fsanitize=address
-CFLAGS = -Werror -Wall -Wextra 
-#	LIBFLAGS_STATIC = -L$(USR_LIB_PATH) -lft -Lmlx_linux -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
-#	INCLUDES = -I./ -I$(USR_LIB_PATH) -Imlx_linux 
+CFLAGS = -Werror -Wall -Wextra
 LIBFLAGS_STATIC =  -lpthread -pthread
 INCLUDES = -I./ 
 
@@ -46,14 +38,6 @@ $(NAME) : $(OBJS)
 	@echo; echo
 
 	
-bonus: $(USR_LIB) $(OBJS_BONUS)
-	@echo # line spacing
-	@echo "\033[1;33mCompiling BONUS - SO_LONG \033[0m"
-	rm -rf $(OBJS) > /dev/null
-	$(CC) $^ $(LIBFLAGS_STATIC) $(CFLAGS) $(INCLUDES) -o $(NAME)
-	@echo "\033[1;32mCompilation Successful. \033[0m"
-
-
 # obj files output
 %.o : %.c
 	@echo
@@ -61,15 +45,6 @@ bonus: $(USR_LIB) $(OBJS_BONUS)
 	$(CC) -c $^ $(CFLAGS) $(INCLUDES) -o $@
 	@echo
 
-
-$(USR_LIB) :
-	@echo
-#	$(AR) $(LIBFLAGS_STATIC) $@ $^						# create the library file for linking
-	@echo "\033[1;33mCompiling LIBFT Library \033[0m"
-	cd ./libft; make > /dev/null; cp libft.a ../; cd ..	
-	@echo												# print new line on screen
-
-	
 
 # remove all object files
 fclean:
@@ -83,3 +58,6 @@ clean: fclean
 re: clean all
 
 .PHONY : all fclean clean re 
+
+# to debug thread execution please include the following flags with valgrind
+# ./valgrind --tool=helgrind --read-var-info=yes ./philo 5 800 200 200 5

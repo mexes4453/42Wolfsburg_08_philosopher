@@ -6,7 +6,7 @@
 /*   By: cudoh <cudoh@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/04 14:36:59 by cudoh             #+#    #+#             */
-/*   Updated: 2022/09/18 07:41:49 by cudoh            ###   ########.fr       */
+/*   Updated: 2022/09/24 16:53:12 by cudoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int	main(int argc, char *argv[])
 	ft_app_init_thr_mtx_var_ptrs(&a_var, thread_vars, philo_threads);
 	if (ft_app_create_thrds(&a_var, thread_vars, philo_threads) < 0)
 		return (-1);
+	ft_app_detect_death(thread_vars, &a_var);
 	if (ft_app_threads_rejoin(&a_var, philo_threads) < 0)
 		return (-1);
-	ft_app_err_info(&a_var);
 	ft_app_free_mem(philo_threads, &a_var, thread_vars);
 	return (0);
 }

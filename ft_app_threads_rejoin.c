@@ -6,7 +6,7 @@
 /*   By: cudoh <cudoh@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 00:38:01 by cudoh             #+#    #+#             */
-/*   Updated: 2022/09/18 08:47:35 by cudoh            ###   ########.fr       */
+/*   Updated: 2022/09/24 13:36:53 by cudoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,6 @@ int	ft_app_threads_rejoin(t_app *a_var, pthread_t *philo_threads)
 			printf("\nError\npthread join failed\n");
 			return (-1);
 		}
-		pthread_mutex_lock(&(a_var->mtx_print));
-		write(1, "philo_thread joined.\n", 21);
-		pthread_mutex_unlock(&(a_var->mtx_print));
 		idx++;
 	}
 	return (0);

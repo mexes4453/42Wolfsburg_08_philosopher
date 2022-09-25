@@ -6,7 +6,7 @@
 /*   By: cudoh <cudoh@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 09:35:34 by cudoh             #+#    #+#             */
-/*   Updated: 2022/09/18 09:35:37 by cudoh            ###   ########.fr       */
+/*   Updated: 2022/09/24 14:13:09 by cudoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,30 @@
  */
 int	ft_app_is_philo_starved(t_threadvar *t_var)
 {
-	ft_app_timestamp(t_var, &(t_var->clk_eat));
+	t_var->ts_ms = ft_app_timestamp(t_var, &(t_var->clk_eat));
 	if (t_var->ts_ms > (t_var->time_die))
 	{
+		pthread_mutex_lock(&(t_var->mtx_state));
+		t_var->state = DEAD;
+		pthread_mutex_unlock(&(t_var->mtx_state));
+		pthread_mutex_lock(&(t_var->a_var->thrds_state->mtx));
+		ft_queue_enqueue(t_var->a_var->thrds_state, t_var->id);
+		pthread_mutex_unlock(&(t_var->a_var->thrds_state->mtx));
 		ft_app_fork_mtx_unlock(t_var);
-		ft_app_timestamp(t_var, &(t_var->clk_start));
-		pthread_mutex_lock(&(t_var->a_var->mtx_print));
-		printf("%8ld %2d died\n", t_var->ts_ms, t_var->id);
-		pthread_mutex_unlock(&(t_var->a_var->mtx_print));
-		pthread_mutex_lock(&(t_var->a_var->mtx_rc));
-		t_var->a_var->rc_eat = ERR_PHILO_STARVED;
-		pthread_mutex_unlock(&(t_var->a_var->mtx_rc));
 		return (ERR_PHILO_STARVED);
 	}
-	else
+	return (0);
+}
+
+int	ft_app_is_philo_dead(t_threadvar *t_var)
+{
+	pthread_mutex_lock(&(t_var->mtx_state));
+	t_var->rc = t_var->state;
+	pthread_mutex_unlock(&(t_var->mtx_state));
+	if (t_var->rc == DEAD)
 	{
-		pthread_mutex_lock(&(t_var->a_var->mtx_rc));
-		t_var->rc = t_var->a_var->rc_eat;
-		pthread_mutex_unlock(&(t_var->a_var->mtx_rc));
-		if (t_var->rc == ERR_PHILO_STARVED)
-		{
-			ft_app_fork_mtx_unlock(t_var);
-			return (ERR_PHILO_STARVED);
-		}
+		ft_app_fork_mtx_unlock(t_var);
+		return (ERR_PHILO_DIED);
 	}
 	return (0);
 }

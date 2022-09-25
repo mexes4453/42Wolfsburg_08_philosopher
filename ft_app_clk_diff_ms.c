@@ -6,7 +6,7 @@
 /*   By: cudoh <cudoh@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 00:38:01 by cudoh             #+#    #+#             */
-/*   Updated: 2022/09/18 08:55:58 by cudoh            ###   ########.fr       */
+/*   Updated: 2022/09/20 18:12:06 by cudoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * @brief 	this function computes the time difference in ms 
  * 			between two time stuct val.
  * 
- * @param n 
+ * @param n	now 
  * @param s 
  * @return suseconds_t 
  */

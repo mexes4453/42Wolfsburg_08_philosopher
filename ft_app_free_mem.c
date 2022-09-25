@@ -6,7 +6,7 @@
 /*   By: cudoh <cudoh@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/18 08:50:17 by cudoh             #+#    #+#             */
-/*   Updated: 2022/09/18 09:44:57 by cudoh            ###   ########.fr       */
+/*   Updated: 2022/09/23 23:01:05 by cudoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ void	ft_app_free_mem(pthread_t *t, t_app *a_var, t_threadvar *v)
 	}
 	pthread_mutex_destroy(&(a_var->mtx_rc));
 	pthread_mutex_destroy(&(a_var->mtx_print));
+	pthread_mutex_destroy(&(a_var->thrds_state->mtx));
 	free(a_var->mtx_forks);
+	free(a_var->mtx_forks_state);
+	free(a_var->forks_state);
 	free(t);
 	free(v);
+	ft_queue_del(a_var->thrds_state);
 }

@@ -6,7 +6,7 @@
 /*   By: cudoh <cudoh@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 21:33:38 by cudoh             #+#    #+#             */
-/*   Updated: 2022/09/18 08:24:34 by cudoh            ###   ########.fr       */
+/*   Updated: 2022/09/24 14:04:22 by cudoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,12 @@ int	ft_app_count_eat(t_threadvar *t_var)
 			pthread_mutex_lock(&(t_var->a_var->mtx_rc));
 			t_var->a_var->rc_eat = ERR_PHILO_EAT_LIMIT;
 			pthread_mutex_unlock(&(t_var->a_var->mtx_rc));
+			pthread_mutex_lock(&(t_var->mtx_state));
+			t_var->state = FULL;
+			pthread_mutex_unlock(&(t_var->mtx_state));
+			pthread_mutex_lock(&(t_var->a_var->thrds_state->mtx));
+			ft_queue_enqueue(t_var->a_var->thrds_state, t_var->id);
+			pthread_mutex_unlock(&(t_var->a_var->thrds_state->mtx));
 			return (ERR_PHILO_EAT_LIMIT);
 		}
 	}

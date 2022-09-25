@@ -6,7 +6,7 @@
 /*   By: cudoh <cudoh@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 21:33:38 by cudoh             #+#    #+#             */
-/*   Updated: 2022/09/18 08:34:05 by cudoh            ###   ########.fr       */
+/*   Updated: 2022/09/22 16:08:58 by cudoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,11 @@ int	ft_app_fork_lim_chk(t_threadvar *t_var)
 {
 	if (t_var->a_var->nbr_fork <= 1)
 	{
-		while (1)
-		{
-			ft_app_timestamp(t_var, &(t_var->clk_eat));
-			if (t_var->ts_ms > (t_var->a_var->time_die))
-			{
-				ft_app_timestamp(t_var, &(t_var->clk_start));
-				printf("%8ld %2d died\n", t_var->ts_ms, t_var->id);
-				t_var->a_var->rc_eat = ERR_PHILO_FORK_LIMIT;
-				return (ERR_PHILO_FORK_LIMIT);
-			}
-		}
+		pthread_mutex_lock(&(t_var->mtx_state));
+		t_var->state = DEAD;
+		pthread_mutex_unlock(&(t_var->mtx_state));
+		usleep(t_var->time_die);
+		return (ERR_PHILO_FORK_LIMIT);
 	}
 	return (0);
 }

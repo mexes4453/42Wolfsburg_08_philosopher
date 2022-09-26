@@ -6,7 +6,7 @@
 /*   By: cudoh <cudoh@student.42wolfsburg.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/10 21:33:38 by cudoh             #+#    #+#             */
-/*   Updated: 2022/09/25 08:34:26 by cudoh            ###   ########.fr       */
+/*   Updated: 2022/09/26 19:02:27 by cudoh            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,18 @@ static int	ft_lock_fork(t_threadvar *t_var, int fk_idx, \
 	a_var = t_var->a_var;
 	while (1)
 	{
-		t_var->rc = ft_atm_rw(&(a_var->mtx_forks_state[fk_idx]), \
-										0, 0, &(a_var->forks_state[fk_idx]));
+		t_var->rc = ft_atm_rw(&(a_var->mtx_forks_state[fk_idx]),
+							  0, 0, &(a_var->forks_state[fk_idx]));
 		if (t_var->rc == FORK_FREE)
 		{
 			pthread_mutex_lock(&(mtx_fks[fk_idx]));
-			ft_atm_rw(&(a_var->mtx_forks_state[fk_idx]), \
-								1, FORK_TAKEN, &a_var->forks_state[fk_idx]);
+			ft_atm_rw(&(a_var->mtx_forks_state[fk_idx]),
+					  1, FORK_TAKEN, &a_var->forks_state[fk_idx]);
 			t_var->locked_forks++;
-			break ;
+			t_var->ts_ms = ft_app_timestamp(t_var, &(t_var->clk_start));
+			ft_app_stdout(" has taken a fork\n", &(t_var->a_var->mtx_print), \
+						  t_var->ts_ms, t_var->id);
+			break;
 		}
 		gettimeofday(&(t_var->now), NULL);
 		if (ft_app_is_philo_starved(t_var) < 0)
